@@ -55,7 +55,10 @@
                     <h1>Bem vindo <br> ao <br> Memorizando</h1>
                     <img src="./assets/gamer.png" alt="" class="user-logo">
                     <input type="text" placeholder="Apelido" id="name">
-                    <button onclick="logar()">Jogar</button>
+                    <a href="./main.html">
+                        <button onclick="logar()">Jogar</button>
+                    </a>
+                   
                 </div>
         </div>
         
@@ -73,7 +76,7 @@
         function logar(){
             window.localStorage.setItem('nickname',nickname.value)
             console.log(nickname.value)
-            document.location.href = 'file:///C:/Users/luis-/OneDrive/%C3%81rea%20de%20Trabalho/brincandojs/jogo_memoria/main.html';
+           // document.location.href = 'file:///C:/Users/luis-/OneDrive/%C3%81rea%20de%20Trabalho/brincandojs/jogo_memoria/main.html';
 
         }   
 
