@@ -9,8 +9,13 @@ body{
     align-items: center;
     background: #473DBB;
 }
-h1,h2{
+h1,h2,button,a{
     color: #5ae4a8;
+    font-family: 'Roboto', sans-serif;
+}
+
+p{
+    font-family: 'Fira Sans', sans-serif;
 }
 
 input{
@@ -28,6 +33,13 @@ input{
     color: #fff;
 }
 
+
+a{
+    width: 70%;
+    text-align: center;
+    border: none;
+
+}
 button{
     width: 50%;
     padding: 10px;

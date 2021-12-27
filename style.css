@@ -12,8 +12,13 @@ body{
   
 }
 
+h1,h2,button{
+    font-family: 'Roboto', sans-serif;
+}
 
-
+p{
+    font-family: 'Fira Sans', sans-serif;
+}
 .container{
     width: 1000px;
     height: 720px;
