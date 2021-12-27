@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memorizando</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <audio src="./sounds/click2.wav" id="click_audio"></audio>
+    <audio src="./sounds/achieve.mp3" id="achievement_audio"></audio>
+    <audio src="./sounds/fail.mp3" id="fail_audio"></audio>
+    <div class="container">
+        <header>
+            <img src="./assets/logo.png" alt="">
+
+            <div class="main_header">
+                <div class="number_of_levels" id="stars">
+             
+                </div>
+                <div class="level" >
+                    <p id="level">1</p>
+                </div>
+    
+                <div class="features">
+                    
+                </div>
+            </div>
+            <div class="user_name">
+                <div class="user_logo">
+                    <img src="./assets/user.png" >
+                </div>
+                
+                <p id="name"></p>
+            </div>
+           
+        </header>
+        
+        <div class="game-container">
+
+            <div class="buttons" style="--m: 8; --tan: 0.41">
+
+                <div class="guess-button">
+                  <div class="button" id="guess">
+                  </div>
+                </div>
+
+                <div class="button button_amarelo" id="amarelo" style="--i: 1">
+    
+                </div>
+        
+                <div class="button button_verde" id="verde" style="--i: 2">
+        
+                </div>
+        
+                <div class="button button_azul" id="azul" style="--i: 3">
+        
+                </div>
+        
+                <div class="button button_vermelho" id="vermelho" style="--i: 4">
+        
+                </div>
+    
+           
+                <div class="button button_laranja" id="laranja" style="--i: 5">
+    
+                </div>
+        
+                <div class="button button_roxo" id="roxo" style="--i: 6">
+        
+                </div>
+        
+                <div class="button button_cinza" id="cinza" style="--i: 7">
+        
+                </div>
+        
+                <div class="button button_preto" id="preto" style="--i: 8">
+        
+                </div>
+            
+        </div>
+
+        <button class="play" onclick="play()">
+            Play
+        </button>
+        </div>
+    
+        <div class="message-window " id="message-window">
+            <div class="message-header " id="message-header">
+              <h2 id="title-message"></h2>
+            </div>
+
+            <div class="message-body"> <img src="" alt="" id="message-image"><p id="message_to_user"></p></div>
+
+            <button class="" onclick="closeWindowMessage()" id="message-button"></button>
+        </div>
+
+        <div id="overlay" class="" >
+
+        </div>
+
+    </div>
+   
+
+<script>
+
+    getName()   
+    const colors = ['amarelo', 'verde', 'azul', 'vermelho', 'laranja','roxo','cinza','preto' ]
+
+    //----Variables to change the difficult of the game------//
+    var numberOfColors = 3
+    var speed = 1000
+    var current_level = 1;
+    //---------------------//
+
+    var ableToPlay
+    var colors_selected = []
+   
+    var colors_picked_by_user = []
+    
+    var level = document.getElementById('level')
+
+
+  
+    var change_color = document.getElementById('guess')
+
+    var stars = document.getElementById('stars')
+
+    var message_window = document.getElementById('message-window')
+    var message_header = document.getElementById('message-header')
+    var title_message = document.getElementById('title-message')
+    var message_image = document.getElementById('message-image')
+    var message_user = document.getElementById('message_to_user')
+    var message_button = document.getElementById('message-button')
+    var overlay = document.getElementById('overlay')
+  
+    //var lose_number = parseInt(lose.innerHTML)
+
+    function allowToPlay(){
+            return ableToPlay = true
+    }
+
+    function blockButtons(){
+        return ableToPlay = false
+    }
+
+
+    //-----Listening to the buttons-------//
+  
+       
+        document.getElementById('amarelo').addEventListener('click',choosingColors)
+        document.getElementById('verde').addEventListener('click',choosingColors)
+        document.getElementById('azul').addEventListener('click',choosingColors)
+        document.getElementById('vermelho').addEventListener('click',choosingColors)
+        document.getElementById('laranja').addEventListener('click',choosingColors)
+        document.getElementById('roxo').addEventListener('click',choosingColors)
+        document.getElementById('cinza').addEventListener('click',choosingColors)
+        document.getElementById('preto').addEventListener('click',choosingColors)
+    
+       
+  // document.getElementById('level').addEventListener('change',addingLevel)
+
+    //document.getElementById("name").addEventListener('change',getName)
+
+
+    //-------Audio Play When Choosing------//
+    function playAudio(){
+        const clicking_sound = document.getElementById('click_audio')
+        clicking_sound.play()
+    }
+
+    function playAchievementAudio(){
+        const echievement_sound = document.getElementById('achievement_audio')
+        echievement_sound.play()
+    }
+
+    function playFailAudio(){
+        const fail_sound = document.getElementById('fail_audio')
+        fail_sound.play()
+    }
+
+
+
+    //-------Increasing or Decreasing levels------//
+    function addingLevel(){
+        var level_number = parseInt(level.innerHTML)
+        level.innerHTML = `${level_number +1}`
+        current_level+=1
+    }
+
+    function descreasingLevel(){
+        var level_number = parseInt(level.innerHTML)
+
+        if(level_number>=1){
+            level.innerHTML = `${1}`
+            current_level = 1
+        }
+        console.log(current_level)
+        
+    }
+
+
+    async function triggergWinMessage(){
+        message_window.classList.add('active')
+        message_window.classList.add('win-window')
+
+        message_header.classList.add('win-header')
+        title_message.innerHTML = 'Nível 1 Concluído!!!'
+
+        message_image.src = './assets/trofeu.png'
+
+        message_user.innerHTML= `Parabéns, você conquistou o nível ${current_level-1}`
+
+        message_button.classList.add('win-button')
+        message_button.innerHTML = 'Próximo Level'
+        playAchievementAudio()
+       
+        overlay.classList.add('active')
+
+        
+
+    }
+
+    function triggergLoseMessage(){
+        message_window.classList.add('active')
+        message_window.classList.add('lose-window')
+
+        message_header.classList.add('lose-header')
+        title_message.innerHTML = 'Você Errou.'
+
+        message_image.src = './assets/sad.png'
+
+        message_user.innerHTML= `Recomece do Nível 1`
+
+        message_button.classList.add('lose-button')
+        message_button.innerHTML = 'Recomeçar'
+        playFailAudio()
+      
+        overlay.classList.add('active')
+
+    }
+
+    async function closeWindowMessage(){
+        
+        message_window.classList.remove('active')
+        message_window.classList.remove('lose-window')
+        message_window.classList.remove('win-window')
+
+        message_header.classList.remove('win-header')
+        message_header.classList.remove('lose-header')
+
+        message_button.classList.remove('win-button')
+        message_button.classList.remove('lose-button')
+
+        blockButtons()
+        overlay.classList.remove('active')
+    }
+
+    function increaseStars(){
+        var elem = document.createElement("img");
+        elem.setAttribute('src', "./assets/estrela.png")
+
+        if(current_level<=10){
+            document.getElementById("stars").appendChild(elem)
+        }
+        
+    }
+
+    function deleteStars(){
+        document.getElementById("stars").innerHTML = ''
+    }
+
+    //-------Change the speed and amount of colors based on the current level------//
+    function changing_level_features(level){
+        
+        switch(level){
+
+            case 1:
+                numberOfColors = 3
+
+                speed=1000
+            break;
+
+            case 2:
+                speed = 700;
+            break;
+
+            case 3:
+                numberOfColors = 4
+            break;
+
+            case 4:
+                speed = 500;
+            break;
+
+            case 5:
+                numberOfColors = 5;
+                speed = 400
+            break;
+
+            case 6:
+                numberOfColors = 6;
+            break;
+
+            case 7:
+                numberOfColors = 7;
+            break;
+
+            case 8:
+                numberOfColors = 8;
+            break;
+            
+            case 9:
+                speed = 300;
+            break;
+
+            case 10:
+                speed = 200
+            break;
+        }
+    }
+
+    
+
+    async function changeColor(color){
+              change_color.className =`button + ${colors_selected[color]}`
+        }
+
+    async function changeColor2(n){
+        if(n<numberOfColors){
+            setTimeout(function(){
+                changeColor2(n)
+            }, speed)
+        if(n>(numberOfColors-1)){
+            change_color.className ='button + branco'
+         }
+         }
+        changeColor(n)
+       // console.log(colors_selected[n])
+       // console.log(n)
+        n+=1          
+        }
+     
+    
+    function play(){
+        
+       while(colors_selected.length < numberOfColors){
+
+            const select_color= colors[Math.floor((Math.random()*colors.length))]
+         
+            if(colors_selected.includes(select_color)){
+                
+            }
+       
+             else{
+                colors_selected.push(select_color)     
+
+            }
+          
+        }
+        console.log(current_level)
+        console.log(colors_selected)
+        
+        allowToPlay()
+         changeColor2(0)
+         
+         
+
+    }
+
+    const checking_result = async function (arr1, arr2){
+            for(i=0; i <colors_selected.length;i++){
+            if(arr1[i] != arr2[i]) return false;
+            }
+            return true
+        
+    }
+
+    
+
+
+   async function choosingColors(event){
+
+    if(ableToPlay === true){
+
+        if(colors_picked_by_user.includes(event.target.id)){
+           for(var i=0; i < colors_picked_by_user.length;i++){
+               if(colors_picked_by_user[i] === event.target.id){
+                   colors_picked_by_user.splice(i,1)
+               }
+           }
+           //Change the collor of the button selected by the user
+           document.getElementById(`${event.target.id}`).classList.remove(`${event.target.id}_ativado`)
+        }
+        else{
+            colors_picked_by_user.push(event.target.id)
+            //Change the collor of the button selected by the user
+            document.getElementById(`${event.target.id}`).classList.add(`${event.target.id}_ativado`)
+            playAudio()
+            console.log(colors_picked_by_user)
+        }
+       
+    
+        if(colors_picked_by_user.length >=numberOfColors){
+        const result = await checking_result(colors_selected,colors_picked_by_user)
+          
+            if(result !== true){
+                colors_selected=[]
+                colors_picked_by_user=[]
+                for(var i=0;i<colors.length;i++){
+                    document.getElementById(`${colors[i]}`).classList.remove(`${colors[i]}_ativado`)
+                }
+                //location.reload()
+                descreasingLevel()
+                changing_level_features(1)
+                triggergLoseMessage()
+                deleteStars()
+            }
+            else{
+                if(current_level < 10){
+                    colors_selected=[]
+                    colors_picked_by_user=[]
+                    for(var i=0;i<colors.length;i++){
+                        document.getElementById(`${colors[i]}`).classList.remove(`${colors[i]}_ativado`)
+                    }
+                    addingLevel()
+                    changing_level_features(current_level)
+                    triggergWinMessage()
+                    increaseStars()
+                }
+                else{
+                    colors_selected=[]
+                    colors_picked_by_user=[]
+                    for(var i=0;i<colors.length;i++){
+                        document.getElementById(`${colors[i]}`).classList.remove(`${colors[i]}_ativado`)
+                    }
+                    descreasingLevel()
+                    changing_level_features(current_level)
+                    triggergLoseMessage()
+                    deleteStars()
+                }
+               
+
+               
+            }
+        }
+    }
+    else{
+        alert('Aperte o play')
+    }
+        
+       
+    }
+
+    function getName(){
+        var name = document.getElementById("name")
+        var name_storaged = localStorage.getItem('nickname')
+
+        name.innerHTML =`${name_storaged}` 
+
+        console.log(name_storaged)
+    }
+
+    
+</script>
+
+</body>
+</html>
